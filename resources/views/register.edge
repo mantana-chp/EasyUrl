@@ -1,0 +1,89 @@
+@layouts.master({ title: 'Register' })
+
+  @slot('style')
+    .ui.container {
+    margin-top: 100px;
+    width: 30%;
+  }
+  @end
+  
+  @!slot('navbar')
+
+  <h1>
+    Register
+  </h1>
+  <form class="ui form" action="{{ route('user.register') }}" method="POST">
+    {{ csrfField() }}
+    <div class="field">
+      <div class="field">
+        <label>Email</label>
+        <input type="text" name="email" value="{{ old('email')  || '' }}" />
+      </div>
+      @inputError('username')
+        @each(message in $messages)
+          <div class="ui negative message">
+            {{ message }}
+          </div>
+        @endeach
+      @end
+    </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input type="password" name="password" />
+      @inputError('password')
+        @each(message in $messages)
+          <div class="ui negative message">
+            {{ message }}
+          </div>
+        @endeach
+      @end
+    </div>
+
+    <div class="field">
+      <label>Confirm Password</label>
+      <input type="password" name="password_confirm" />
+      @inputError('password_confirm')
+        @each(message in $messages)
+          <div class="ui negative message">
+            {{ message }}
+          </div>
+        @endeach
+      @end
+    </div>
+
+    <div>
+      <!-- Display validation error messages -->
+      @if (session.has('errors'))
+        <ul>
+          @each(error in session.get('errors'))
+            @if(error.username)
+              <li>
+                {{ error.username }}
+              </li>
+              '
+            @else
+              <li>
+                {{ error }}
+              </li>
+            @end
+          @endeach
+        </ul>
+      @endif
+      
+      <!-- Display flash messages -->
+      @if (session.has('message'))
+        <div class="ui success message">
+          {{ session.get('message') }}
+        </div>
+      @endif
+    </div>
+
+    <input type="submit" value="Register" class="ui button" />
+  </form>
+
+  <p>
+    Already have an account? &nbsp; <a href="/login">Login</a>
+  </p>
+
+@end

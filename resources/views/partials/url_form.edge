@@ -1,0 +1,11 @@
+<form action="{{ route('easy.store') }}" method="POST" class="ui form">
+  {{ csrfField() }}
+  <div class="two fields">
+    @!input({name:'url',
+    placeholder: 'Enter your link here to make it easy to remember',
+    value: flashMessages.get('url',''),
+    wide: 'twelve',
+    required: true})
+    @!input({type:'submit', value:'Make it easy!', wide:'two'})
+  </div>
+</form>

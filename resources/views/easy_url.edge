@@ -1,0 +1,64 @@
+@layouts.master({title: 'Easy Url'})
+
+  @slot('style')
+    .hide {
+      display: none;
+    }
+  @end
+  
+  @slot('script')
+    <script>
+      // 8.1 .button.edit - Toggle class "hide" for the divs with matching data-id
+      $(".edit").click(function() {
+        const id = $(this).find("i").data("id"); // Get the data-id of the clicked button
+        $(`#url-link-${id}`).toggleClass("hide"); // Toggle visibility of the URL link
+        $(`#url-input-${id}`).toggleClass("hide"); // Toggle visibility of the input field
+      });
+      // 8.2 .button.update - Ajax request to update the URL
+      $(".update").click(function() {
+        const id = $(this).data("id");
+        $(`#url-input-${id}`).toggleClass("hide"); // Hide input
+        $(`#url-link-${id}`).toggleClass("hide"); // Show link
+      });
+      // 8.3 .button.copy - Copy the URL to the clipboard
+      $(".copy").click(function() {
+        const id = $(this).data("id");
+        const easyUrl = $(`#url-easy-${id}`).text(); // Get the short URL text
+        const tempInput = $("<input>");
+        // Append the temporary input to the body
+        $("body").append(tempInput);
+        // Set the value of the input to the easyUrl and select it
+        tempInput.val(easyUrl).select();
+        // Copy the selected text to the clipboard
+        document.execCommand("copy");
+        // Remove the temporary input element
+        tempInput.remove();
+        // Show a success message
+        alert("Copied URL to clipboard!");
+      });
+    </script>
+  @end
+  
+  
+  <div class="main">
+    <h1 class="ui orange header">
+      Easy URL
+    </h1>
+    <h3 class="label ui pink">
+      Hi, {{ auth.user.email }}
+    </h3>
+    @flashMessage('message')
+      <div class="ui {{ $message.type }} message">
+        <p>
+          {{ $message.message }}
+        </p>
+      </div>
+    @end
+    <h5>
+      Easy URL transforming long, ugly links to nice, memorable and trackable short URLs.
+    </h5>
+    @include('partials/url_form')
+  </div>
+  @include('partials/url_list')
+
+@end

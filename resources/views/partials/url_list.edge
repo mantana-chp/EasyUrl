@@ -1,0 +1,41 @@
+@each(url in urls)
+  <div class="ui segments">
+    <div class="ui segment">
+      {{--  nanoid  --}}
+      <a
+        id="url-easy-{{ url.id }}"
+        href="{{ route('easy.show', {easyurl: url.easyUrl}) }}"
+        target="_blank"
+      >{{ url.easyUrl }}</a>
+      {{--  delete btn  --}}
+      <a class="ui mini button right floated" href="{{ route('easy.delete', {id: url.id }) }}">
+        <i class="trash alternate outline icon"></i>
+      </a>
+      {{--  edit  --}}
+      <a class="ui mini button edit right floated">
+        <i class="edit outline icon" data-id="{{ url.id }}"></i>
+      </a>
+      {{--  copy  --}}
+      <a class="ui mini button right floated">
+        <i class="copy outline icon" data-id="{{ url.id }}"></i>
+      </a>
+
+      <div id="url-link-{{ url.id }}" class="ui segment">
+        <a href="{{ url.url }}" target="_blank">{{ url.url }}</a>
+      </div>
+
+      {{--  update button  --}}
+      <form method="POST" action="{{ route('easy.update', {id: url.id}) }}">
+        {{ csrfField() }}
+        <div id="url-input-{{ url.id }}" class="ui segment form hide">
+          <div class="fields">
+            <input class="ui field" name="url" value="{{ url.url }}" />&nbsp;&nbsp;&nbsp;&nbsp;
+           {{--  <button class="ui button update" data-id="{{ url.id }}">Update</button>--}}
+           <input type="submit" value="Update" class="ui button" />
+          </div>
+        </div>
+      </form>
+    </div>
+
+  </div>
+@endeach
